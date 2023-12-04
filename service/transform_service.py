@@ -33,7 +33,7 @@ class Transform:
                 , config.EVENT_METADATA_PAYMENT_STATUS
                 , config.EVENT_METADATA_SEARCH_KEYWORDS
             )
-        )
+        ).drop(config.CLICKSTREAM_EVENT_METADATA)
 
     def flatten_transaction(self, transaction_df: DataFrame) -> DataFrame:
 

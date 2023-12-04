@@ -11,7 +11,7 @@ class FileService:
 
         return spark_session.read.format(config.RAW_DATA_FORMAT).option("header", "true").load(file_path)
 
-    def write_mongodb(self, input_df, collection_name):
+    def write_mongodb(self, input_df: DataFrame, collection_name: str):
 
         input_df.write\
             .format('com.mongodb.spark.sql.DefaultSource')\
@@ -19,7 +19,13 @@ class FileService:
             .option('spark.mongodb.output.uri', f'mongodb://127.0.0.1:27017/snehasr.{collection_name}?authSource=admin')\
             .save()
 
-    def mongo_db_test(SELF, test_df: DataFrame):
+    def read_mongodb(self, collection_name: str) -> DataFrame:
+        return spark_session.read\
+            .format("com.mongodb.spark.sql.DefaultSource")\
+            .option('spark.mongodb.input.uri', f'mongodb://127.0.0.1:27017/snehasr.{collection_name}?authSource=admin')\
+            .load()
+
+    def mongo_db_test(self, test_df: DataFrame):
         my_client = pymongo.MongoClient('mongodb://127.0.0.1:27017/')
         my_db = my_client['snehasr']
         my_col = my_db['transactions']

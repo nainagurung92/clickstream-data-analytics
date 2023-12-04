@@ -12,7 +12,7 @@ class PipelineService:
         clickstream_df: DataFrame = file_service.FileService().read_csv_file(config.CLICKSTREAM_FILE_PATH)
         clickstream_dedup_df: DataFrame = cleanser_service.Cleanser().deduplicate(clickstream_df, config.CLICKSTREAM_PRIMARY_COLUMNS)
         transformed_clickstream_df: DataFrame = transform_service.Transform().flatten_clickstream(clickstream_dedup_df)
-        clickstream_type_cast_df: DataFrame = transform_service.Transform().type_cast_clickstream(transformed_clickstream_df)
+        clickstream_type_cast_df: DataFrame = transform_service.Transform().type_cast_clickstream(transformed_clickstream_df).limit(500000)
         file_service.FileService().write_mongodb(clickstream_type_cast_df, config.MONGODB_CLICKSTREAM_TABLE_NAME)
 
         customer_df: DataFrame = file_service.FileService().read_csv_file(config.CUSTOMERS_FILE_PATH)
@@ -27,12 +27,12 @@ class PipelineService:
 
         transaction_df: DataFrame = file_service.FileService().read_csv_file(config.TRANSACTIONS_FILE_PATH)
         transaction_dedup_df: DataFrame = cleanser_service.Cleanser().deduplicate(transaction_df, config.TRANSACTION_PRIMARY_COLUMNS)
-        transformed_transaction_df: DataFrame = transform_service.Transform().flatten_transaction(transaction_dedup_df)
+        transformed_transaction_df: DataFrame = transform_service.Transform().flatten_transaction(transaction_dedup_df).limit(500000)
         file_service.FileService().write_mongodb(transformed_transaction_df, config.MONGODB_TRANSACTION_TABLE_NAME)
 
         enriched_transaction_df: DataFrame = transform_service.Transform().enrich_transaction(
             transformed_transaction_df,
             product_type_cast_df,
             customer_type_cast_df
-        )
+        ).limit(300000)
         file_service.FileService().write_mongodb(enriched_transaction_df, config.MONGODB_TRANSACTION_AGGREGATE_TABLE_NAME)
