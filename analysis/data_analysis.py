@@ -2,7 +2,7 @@ from pyspark.sql import DataFrame
 from service import file_service
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
-from pyspark.sql.types import TimestampType, IntegerType, DateType, DoubleType, FloatType
+from pyspark.sql.types import IntegerType
 
 
 class Analysis:
@@ -20,10 +20,8 @@ class Analysis:
             )
 
         product: DataFrame = file_service.FileService().read_mongodb("products").drop("_id")
-        transaction:  DataFrame = file_service.FileService().read_mongodb("transactions").drop("_id")
+        customer:  DataFrame = file_service.FileService().read_mongodb("customers").drop("_id")
         transaction_agg: DataFrame = file_service.FileService().read_mongodb("transactions_aggregate").drop("_id")
-
-        # clickstream.show(10)
 
         total_clickstream: int = clickstream.count()
 
