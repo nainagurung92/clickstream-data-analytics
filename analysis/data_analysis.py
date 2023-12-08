@@ -20,9 +20,8 @@ class Analysis:
             )
 
         product: DataFrame = file_service.FileService().read_mongodb("products").drop("_id")
-        customer:  DataFrame = file_service.FileService().read_mongodb("customers").drop("_id")
+        # customer:  DataFrame = file_service.FileService().read_mongodb("customers").drop("_id")
         transaction_agg: DataFrame = file_service.FileService().read_mongodb("transactions_aggregate").drop("_id")
-        transaction_agg.show(10)
 
         total_clickstream: int = clickstream.count()
 
