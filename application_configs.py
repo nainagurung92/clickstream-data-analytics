@@ -1,4 +1,4 @@
-CLICKSTREAM_FILE_PATH = "/Users/Z0045NQ/Documents/MTech/Data Engg/Project/Data/archive/click_stream.csv"
+CLICKSTREAM_FILE_PATH = "/Users/Mac/Documents/IISc/Aug-23-Term/DataEnggAtScale/mywork/Data/click_stream.csv"
 
 
 MASTER_NAME = "local[*]"
